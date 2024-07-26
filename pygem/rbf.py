@@ -93,7 +93,7 @@ class RBF(Deformation):
         basis functions.  For details see the class
         :class:`RBF`. The default value is 0.5.
     :param dict extra_parameter: the additional parameters that may be passed to
-    	the kernel function. Default is None.
+        the kernel function. Default is None.
         
     :cvar numpy.ndarray weights: the matrix formed by the weights corresponding
         to the a-priori selected N control points, associated to the basis
@@ -218,6 +218,7 @@ class RBF(Deformation):
 
         rhs = np.zeros((npts + 3 + 1, dim))
         rhs[:npts, :] = Y
+        H[np.diag_indices_from(H)] += 1e-8
         weights = np.linalg.solve(H, rhs)
         return weights
 
@@ -402,4 +403,4 @@ class RBF(Deformation):
             **self.extra)
         H[:, self.n_control_points] = 1.0
         H[:, -3:] = src_pts
-        return np.asarray(np.dot(H, self.weights))
+        return np.array(np.dot(H, self.weights))
